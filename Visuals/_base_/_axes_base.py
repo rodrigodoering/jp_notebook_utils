@@ -59,7 +59,6 @@ class AxesInstance:
     def assert_sequence(self, _input_: Sequence, required: int = None) -> Sequence:
         if required is None:
             required = self.n_axis
-        #print(_input_)
         size_input = len(_input_)
         assert_msg = 'Valores na Sequência: %d ; Exigido pela função: %d' 
         assert size_input == required, assert_msg % (size_input, required)
@@ -74,7 +73,6 @@ class AxesInstance:
             
         label_methods = ['set_%slabel' % id_ for id_ in self.axis_ids]
         fontsize = 16 if fontsize is None else fontsize
-        print(label_methods)
         for method in self.get_ax_method(label_methods):
             method(next(axis_labels), fontsize=fontsize, rotation=0)  
                     
@@ -136,15 +134,7 @@ class AxesInstance:
                 else:
                     raise Exception('Something weird happened')
                 
-                #print('CONTROL_PLOT_PARAMS')
-                #print(args)
-                
-                self.last_function_call = func.__name__
-                # DEBUG
-                print('Call:', self.last_function_call)
-                print('Len Args', len(args))
-                print('required', required_vals, '\n')
-                
+                self.last_function_call = func.__name__                
                 self.assert_sequence(args, required_vals)
 
                 # retorna função do objeto ax
@@ -172,8 +162,6 @@ class AxesInstance:
     @check_params(input_type='vector')
     def ax_quiver(self, *coords: NumericArray, origin: tuple = None, **kwargs) -> NoReturn:      
         tail_coords = tuple(0 for i in range(self.n_axis)) if origin is None else origin
-        for arg in kwargs:
-            print(arg)
         self.ax.quiver(*tail_coords, *coords, **kwargs)
  
 

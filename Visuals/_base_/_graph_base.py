@@ -96,9 +96,7 @@ class GraphBase:
             self.axObj = current_Axes
         
         elif current_plt is not None:
-            print('AQUI FOI')
             if True:
-                print('AQUI TB')
                 self.axObj = current_plt.axObj
             
         elif n_axis is None:
@@ -160,7 +158,6 @@ class GraphBase:
         
         # Se Y e Z não foram passados, avalia X
         if all(_input_ is None for _input_ in [Y,Z]):
-            print('ALL NONE')
             
             X = GraphBase.to_numpy(X)
             
@@ -170,7 +167,6 @@ class GraphBase:
             n_samples, n_features = X.shape
                 
             if n_features == self.axObj.n_axis:
-                print('Full coords')
                 for coord in X.T:
                     yield coord
             
