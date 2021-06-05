@@ -118,15 +118,7 @@ def display_vec(V: NumericArray, label: str=None, info: bool=True, **kwargs) -> 
 
 
 
-def display_matrix(
-        M: NumericArray, 
-        n_rows: int=None, 
-        n_cols: int=None, 
-        label: str=None, 
-        info: bool=True, 
-        **kwargs
-        
-    ) -> NoReturn:
+def display_matrix(M: NumericArray, n_rows: int=None, n_cols: int=None, label: str=None, info: bool=True, **kwargs) -> NoReturn:
     '''
     Exibe no Stdout a matriz numérica passada junto com demais argumentos
     
