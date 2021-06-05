@@ -7,6 +7,20 @@ Created on Wed May 12 19:56:10 2021
 import numpy as np
 
 
+def to_numpy(array: NumericArray) -> np.ndarray:
+    if not isinstance(array, np.ndarray):
+
+        if any(type(array) is _type_ for _type_ in (list, tuple)):
+            array = np.array(array)
+
+        elif isinstance(array, pd.DataFrame):
+            array = array.values
+
+        # Conforme bugs forem surgindo, atualizarei esse bloco de código
+        # Para suportar novos tipos
+        else:
+            raise ValueError('Tipo de input não reconhecido')
+    return array
 
 
 def numpy_convert(
@@ -38,22 +52,6 @@ def numpy_convert(
 
 
 
-def numpy_convert(array):
-    '''
-    Argumentos:
-    ----------
-    array - lista de valores a ser validada
-    '''
-    if isinstance(array, list):
-        array = np.array(array)
-    return array
-
-
-
-
-
-# FUNÇÃO: number_to_string 
-# Converte um array em uma string compatível com a linguagem Latex
 def number_to_string(array):
     '''
     Argumentos:
@@ -66,23 +64,6 @@ def number_to_string(array):
         return ('%.2f' % val if str(val)[-2:] != '.0' else '%d' % val for val in rounded)
     else:
         return map(str, rounded)
-
-
-    
-def to_numpy(array: NumericArray) -> np.ndarray:
-    if not isinstance(array, np.ndarray):
-
-        if any(type(array) is _type_ for _type_ in (list, tuple)):
-            array = np.array(array)
-
-        elif isinstance(array, pd.DataFrame):
-            array = array.values
-
-        # Conforme bugs forem surgindo, atualizarei esse bloco de código
-        # Para suportar novos tipos
-        else:
-            raise ValueError('Tipo de input não reconhecido')
-    return array
 
 
 
