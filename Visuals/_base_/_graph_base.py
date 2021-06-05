@@ -26,11 +26,10 @@ class GraphBase:
     @staticmethod 
     def to_numpy(array: NumericArray) -> np.ndarray:
         if not isinstance(array, np.ndarray):
-            # Testo o tipo da variável usando type() para tipos nativos do python por ser bastante legível
-            # Se for explicitamente uma lista nativa do python...
-            if type(array) is list:
+           
+            if any(type(array) is _type_ for _type_ in (list, tuple)):
                 array = np.array(array)
-            # Porém, para testar possíveis instâncias, sempre utilizar isinstance()
+           
             elif isinstance(array, pd.DataFrame):
                 array = array.values
 
