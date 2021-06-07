@@ -43,17 +43,19 @@ class Plot(GraphBase):
             offset: float = 0.1, 
             ax_offset: int = 0, 
             **kwargs
+            
         ) -> NoReturn:
-        """Função para exibir anotações no gráfico utilizando como base o método _subplots.Axes.text
+        """
+        Função para exibir anotações no gráfico utilizando como base o método _subplots.Axes.text
         Trabalha especialmente com strings
         
         Argumentos:
         -----------
-        coords - Coordenadas (x,y,z) para as anotar, um vetor por anotação
-        annotations - iterable contendo as anotações como strings
-        offset - desloca a anotação com base em um eixo de referência
-        ax_offset - eixo de referência
-        **kwargs - devem ser passados para  Axes.plot()
+                coords - Coordenadas (x,y,z) para as anotar, um vetor por anotação
+                annotations - iterable contendo as anotações como strings
+                offset - desloca a anotação com base em um eixo de referência
+                ax_offset - eixo de referência
+                **kwargs - devem ser passados para  Axes.plot()
         
         """        
         coords = GraphBase.to_numpy(coords)
@@ -65,6 +67,7 @@ class Plot(GraphBase):
         if ax_offset > self.axObj.n_axis:
             print('AxesInstance: ax_offset não existe no plot, desconsiderando offset')
             offset = 0
+            
         # deve ser passada uma coordenada para cada anotação
         for vec, _str_ in zip(coords, annotations):
             coord_vals = (vec[i] + offset * int(i == ax_offset) for i in range(self.axObj.n_axis))
@@ -78,20 +81,20 @@ class Plot(GraphBase):
             X: Union[NumericArray, tuple] = None,
             n_samples: int = 10,
             plot_intercept: bool = False,
-            specs: dict = None,
-            label: str = None,
-            
+            label: str = None,           
             **kwargs
+            
         ) -> NoReturn:
-        """Desenha funções em 2D e 3D com base no método _subplots.Axes.plot
+        """
+        Desenha funções em 2D e 3D com base no método _subplots.Axes.plot
         
         Argumentos:
         -----------
-        function - um callable que retorne um array de valores numéricos para servir de dimensão Y em 2D ou Z em 3D
-        X - domínio da função, valores para passar como input. X = [x] para plots 2D ou X = [x,y] para plots 3D
-        plot_intercept - Se verdadeiro, exibe o ponto [0, function(0)] em 2D ou [0, 0, function(0,0)] em 3D
-        label - nome da função, suporta linguagem LaTex
-        **kwargs - devem ser passados para  _subplots.Axes.plot()
+                function - um callable que retorne um array de valores numéricos para servir de dimensão Y em 2D ou Z em 3D
+                X - domínio da função, valores para passar como input. X = [x] para plots 2D ou X = [x,y] para plots 3D
+                plot_intercept - Se verdadeiro, exibe o ponto [0, function(0)] em 2D ou [0, 0, function(0,0)] em 3D
+                label - nome da função, suporta linguagem LaTex
+                **kwargs - devem ser passados para  _subplots.Axes.plot()
         
         """        
         n_features = self.axObj.n_axis - 1
@@ -116,11 +119,9 @@ class Plot(GraphBase):
         Y = function(X)
         
         if label is not None:
-            #self.axObj.ax_plot(*X.T, Y, label=label, **kwargs)
             self.axObj.ax_plot(*self.iter_params(X, Y), label=label, **kwargs)
             self.enable_legend()
         else:
-            #self.axObj.ax_plot(*X.T, Y, **kwargs)
             self.axObj.ax_plot(*self.iter_params(X, Y), **kwargs)
         
         if plot_intercept:
@@ -144,6 +145,19 @@ class Plot(GraphBase):
             **kwargs
             
         ) -> NoReturn:
+        """
+        Desenha gráficos de dispersão com base no método _subplots.Axes.scatter.
+        Suporta interpretação flexível de inputs
+        
+        Argumentos:
+        -----------
+                [X,Y,Z] - arrays numéricos contendo os componentes (coordenadas) de cada ponto a ser plotado
+                annot - iterable contendo as anotações como strings
+                offset - desloca a anotação com base em um eixo de referência
+                ax_offset - eixo de referência
+                **kwargs - devem ser passados para  _subplots.Axes.plot()
+        
+        """ 
 
         self.axObj.ax_scatter(*self.iter_params(X, Y, Z), **kwargs)
 
@@ -217,10 +231,9 @@ class Plot(GraphBase):
         
         ) -> NoReturn:
         
-        #print('VECTORS FUNC')
+        # Consolida os argumentos de input em uma única matriz
         vecs = np.array([*self.iter_params(X,Y,Z)]).T
-        #print(vecs)
-        #print('Len vecs', len(vecs))
+        
         n_vecs = vecs.shape[0]
         print('\n')
         
@@ -230,9 +243,7 @@ class Plot(GraphBase):
             # i.e mesmo número de componentes
             self.axObj.assert_sequence(origin, None)
         else:
-            origin = tuple(0 for ax in range(self.axObj.n_axis))
-        
-        #vec_scale = {'angles':'xy', 'scale_units':'xy', 'scale':1}       
+            origin = tuple(0 for ax in range(self.axObj.n_axis))   
         
         if color is not None:
             if isinstance(color, str):

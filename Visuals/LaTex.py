@@ -24,7 +24,6 @@ import Visuals._utils_._functions as utils
 
 
 # Define argumentos personalisáveis do código LaTex
-# Armazenados em listas
 # O índice posicional de cada elemento será o argumento a ser passado nas funções
 
 # Lista de tamanhos disponíveis
@@ -64,6 +63,24 @@ available_fonts = [
 
 
 def display_expression(expr: str, size: int=4, style: int=0, font: int=0, spacing: int=1) -> NoReturn:
+    '''
+    Exibe no stdout uma expressão LaTex fazendo uso dos módulos Display e Markdown do módulo IPython
+    **NOTA: A função NÃO avalia a sintaxe da expressão LaTex passada, isso deve ser garantido pelo usuário.
+    Também permite algumas personalizações com os argumentos numéricos, onde o valor inteiro representa o índex
+    da lista de opções disponíveis.
+    
+    Argumentos:
+    ----------
+            expr: expressão LaTex a ser exibida. 
+            size: tamanho de fonte da expressão LaTex (opções definidas em "available_sizes")
+            style: estilo de fonte da expressão (opções definidas em "available_styles")
+            font: assim como size e style, serve para selecionar uma opção entre as existentes, no caso, tipo de fonte
+            spacing: espaçamento para gerar a visualização da expressão latex. É feito pensando em células de jupyter
+                     notebooks. O espaçamento se dá com a tag <br> de HTML, que refere-se a quebra de linha.
+                     Supondo que spacing seja 3, cria-se duas tags de 3 quebras de linhas (<br><br><br>) antes e depois da expressão
+            
+
+    '''
     if type(expr) is not str:
         raise('Passe apenas strings')
     
@@ -90,12 +107,12 @@ def display_vec(V: NumericArray, label: str=None, info: bool=True, **kwargs) -> 
     '''
     Exibe no stdout um vetor através de linguagem latex de visualização
     
-    Argumentos
+    Argumentos:
     ----------
-    V - numpy.array contendo o vetor a ser exibido com Latex
-    label - rótulo do vetor, também será exibido em Latex
-    info - se verdadeira, exibe o espaço vetorial pertencente
-    **kwargs - a serem passados para display_expression()
+            V - array contendo o vetor a ser exibido com Latex
+            label - rótulo do vetor, também será exibido em Latex
+            info - se verdadeira, exibe o espaço vetorial pertencente
+            **kwargs - a serem passados para display_expression()
     '''
     V = utils.numpy_convert(V)
     
@@ -124,13 +141,12 @@ def display_matrix(M: NumericArray, n_rows: int=None, n_cols: int=None, label: s
     
     Argumentos:
     ----------
-    M - Pandas.DataFrame ou 2-D Numpy.array contendo vetor ou matriz a ser plotada com markdown
-    n_rows - quantidade máxima de linhas a serem exibidas
-    n_cols - quantidade máxima de colunas a serem exibidas
-    label - nome/símbolo da matriz passada
-    info - se verdadeira, exibe dimensões da matriz com LaTex
-    **kwargs - a serem passados para display_expression()
-    
+            M - Pandas.DataFrame ou 2-D Numpy.array contendo vetor ou matriz a ser plotada com markdown
+            n_rows - quantidade máxima de linhas a serem exibidas
+            n_cols - quantidade máxima de colunas a serem exibidas
+            label - nome/símbolo da matriz passada
+            info - se verdadeira, exibe dimensões da matriz com LaTex
+            **kwargs - a serem passados para display_expression()
     '''
     if isinstance(M, pd.DataFrame):
         M = utils.numpy_convert(M.values)
