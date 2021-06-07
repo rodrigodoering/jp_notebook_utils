@@ -1,0 +1,6 @@
+
+cd C:\Users\rodri\github\jp_notebook_utils
+
+python setup.py bdist_wheel
+
+python -m twine upload dist/jp_notebook_utils-1.0.0-py3-none-any.whl -u rodrigo_doering -p Jfj3dsewxly1
