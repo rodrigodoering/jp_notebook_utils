@@ -18,6 +18,7 @@ from Visuals._utils_._exceptions import *
 from Visuals._utils_._type_definitions import *
 from Visuals._base_._graph_base import GraphBase
 from Visuals._base_._axes_base import AxesInstance
+import Visuals._utils_._functions as utils
 
         
 class Plot(GraphBase):
@@ -195,10 +196,10 @@ class Plot(GraphBase):
                     base_variable[np.newaxis,:], 
                     base_variable[:,np.newaxis]
                 )
-                
-                Z = GraphBase.to_numpy(
+
+                Z = utils.to_numpy(
                     function(
-                        GraphBase.numpy_convert(grid, flat=True)
+                        utils.numpy_convert(grid, check=True, flat=True)
                     )
                 )
                 

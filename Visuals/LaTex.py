@@ -114,7 +114,7 @@ def display_vec(V: NumericArray, label: str=None, info: bool=True, **kwargs) -> 
             info - se verdadeira, exibe o espaço vetorial pertencente
             **kwargs - a serem passados para display_expression()
     '''
-    V = utils.numpy_convert(V)
+    V = utils.numpy_convert(V, check=True)
     
     if V.ndim > 1:
         V = V.reshape(-1)
@@ -149,9 +149,9 @@ def display_matrix(M: NumericArray, n_rows: int=None, n_cols: int=None, label: s
             **kwargs - a serem passados para display_expression()
     '''
     if isinstance(M, pd.DataFrame):
-        M = utils.numpy_convert(M.values)
+        M = M.values
     else:
-        M = utils.numpy_convert(M)
+        M = utils.numpy_convert(M, check=True)
     
     # dimensões da matriz
     dims_matriz = M.shape
