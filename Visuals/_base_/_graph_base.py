@@ -17,63 +17,13 @@ from matplotlib.axes import _subplots
 from Visuals._base_._axes_base import AxesInstance
 from Visuals._utils_._exceptions import *
 from Visuals._utils_._type_definitions import *
+import Visuals._utils_._functions as utils
 
 
 class GraphBase:
-           
-    """ Class Static Methods """
-    
-    @staticmethod 
-    def to_numpy(array: NumericArray) -> np.ndarray:
-        if not isinstance(array, np.ndarray):
-           
-            if any(type(array) is _type_ for _type_ in (list, tuple)):
-                array = np.array(array)
-           
-            elif isinstance(array, pd.DataFrame):
-                array = array.values
 
-            # Conforme bugs forem surgindo, atualizarei esse bloco de código
-            # Para suportar novos tipos
-            else:
-                raise ValueError('Tipo de input não reconhecido')
-        return array
-    
-    
-    @staticmethod
-    def numpy_convert(
-            array: NumericArray,
-            check: bool = True,
-            squeeze: bool = False, 
-            expand: bool = False,
-            flat: bool = False
-        ) -> np.ndarray:
-        
-        if check:
-            ndarray = GraphBase.to_numpy(array)
-        
-        if squeeze and ndarray.ndim >= 2:
-            ndarray = np.squeeze(ndarray)
-            
-        if expand and ndarray.ndim == 1:
-            ndarray = np.expand_dims(ndarray, axis=0)
-        
-        if flat and ndarray.ndim >= 2:
-                flatten = [feature.ravel() for feature in ndarray]
-                ndarray = np.array(flatten).T
-            
-        return ndarray
-
-
-    @staticmethod
-    def flat_grid(grid):
-        flatten = [coords.ravel() for coords in grid]
-        return np.array(flatten).T
-    
-    
     """ Plot assist Methods """
     
-
     def new_plot(
             self, 
             n_axis: int = None, 
@@ -146,7 +96,6 @@ class GraphBase:
         else:
             return False
                 
-    
 
     def iter_params(
             self,
@@ -158,10 +107,10 @@ class GraphBase:
         # Se Y e Z não foram passados, avalia X
         if all(_input_ is None for _input_ in [Y,Z]):
             
-            X = GraphBase.to_numpy(X)
+            X = utils.to_numpy(X)
             
             if X.ndim == 1:
-                X = GraphBase.numpy_convert(X, expand=True)
+                X = utils.numpy_convert(X, expand=True)
             
             n_samples, n_features = X.shape
                 
