@@ -100,5 +100,5 @@ Now, there are two specific folders inside `Visuals` package: `_base_` and `_uti
             
 As for the other sub-package, `Visuals._base_`, it holds parent classes to be used in a relashionship with `Visuals.FastMatplot.Plot` object. As briefly mentioned in introduction, the plotting functions are written as classes in object oriented programming (which is heavily supported in Python) in orther to encapsulate all the plotting/matplotlib related code. Despite only importing the `Plot`class is required, the base classes are running as well. A more visual way to describe the relation between the modules and classes within Visuals package is presented below:
 <br><br>
-<img src='imgs/plot_class_diagram.png' width='800px'>
+<img src='/Imgs/plot_class_diagram.png' width='800px'>
 
