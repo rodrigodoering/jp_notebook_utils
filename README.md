@@ -9,7 +9,6 @@ As a data scientist & data engineer, one of the most frequent tasks when dealing
 As a complementary module, a module was also included with functions to produce a nice display of mathematical equations and formulations using LaTex language and IPython built-in modules for display and markdown. 
 
 
-
 ## 2. Installation 
 
 To install Visuals module, two main options are available
@@ -98,7 +97,5 @@ Now, there are two specific folders inside `Visuals` package: `_base_` and `_uti
 - Visuals._utils_._type_definitions : all the user defined types for type hinting
 - Visuals._utils_._functions : utility functions for other modules
             
-As for the other sub-package, `Visuals._base_`, it holds parent classes to be used in a relashionship with `Visuals.FastMatplot.Plot` object. As briefly mentioned in introduction, the plotting functions are written as classes in object oriented programming (which is heavily supported in Python) in orther to encapsulate all the plotting/matplotlib related code. Despite only importing the `Plot`class is required, the base classes are running as well. A more visual way to describe the relation between the modules and classes within Visuals package is presented below:
-<br><br>
-<img src='/Imgs/plot_class_diagram.png' width='800px'>
+As for the other sub-package, `Visuals._base_`, it holds parent classes to be used in a relashionship with `Visuals.FastMatplot.Plot` object. The relationship between objects and modules within the package structure as well as demonstration of the modules is described in details in the User guide also availablei n the repository here (incluir hyperlink depois que terminar o Userguide) 
 
