@@ -22,7 +22,8 @@ import Visuals._utils_._functions as utils
 
 class GraphBase:
 
-    """ Plot assist Methods """
+    def __init__(self,):
+        self.axObj = None
     
     def new_plot(
             self, 
