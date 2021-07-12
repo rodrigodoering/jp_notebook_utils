@@ -35,6 +35,8 @@ class Plot(GraphBase):
                 current_plt = current_plt,
                 **kwargs
             )
+        # Inicia GraphBase e o atributo axObj como NoneType
+        super(Plot, self).__init__()
 
 
     def Annotate(
@@ -47,19 +49,21 @@ class Plot(GraphBase):
             
         ) -> NoReturn:
         """
-        Função para exibir anotações no gráfico utilizando como base o método _subplots.Axes.text
-        Trabalha especialmente com strings
-        
-        Argumentos:
+        Description:
         -----------
-                coords - Coordenadas (x,y,z) para as anotar, um vetor por anotação
-                annotations - iterable contendo as anotações como strings
-                offset - desloca a anotação com base em um eixo de referência
-                ax_offset - eixo de referência
-                **kwargs - devem ser passados para  Axes.plot()
+                Function to annotate plots with a list of coordinates and respective strings 
+                Call _subplots.Axes.text method to draw annotations
+        
+        Arguments:
+        ---------
+                coords - Coordinates (x,y,z) 
+                annotations - iterable with strings to annotate
+                offset - displace annotations based on offset value
+                ax_offset - offset axis for reference
+                **kwargs - key arguments for _subplots.Axes.text
         
         """        
-        coords = GraphBase.to_numpy(coords)
+        coords = utils.to_numpy(coords)
         
         if type(annotations) is str:
             annotations = [annotations]
@@ -87,15 +91,18 @@ class Plot(GraphBase):
             
         ) -> NoReturn:
         """
-        Desenha funções em 2D e 3D com base no método _subplots.Axes.plot
-        
-        Argumentos:
+        Description:
         -----------
-                function - um callable que retorne um array de valores numéricos para servir de dimensão Y em 2D ou Z em 3D
-                X - domínio da função, valores para passar como input. X = [x] para plots 2D ou X = [x,y] para plots 3D
-                plot_intercept - Se verdadeiro, exibe o ponto [0, function(0)] em 2D ou [0, 0, function(0,0)] em 3D
-                label - nome da função, suporta linguagem LaTex
-                **kwargs - devem ser passados para  _subplots.Axes.plot()
+                Draw functions in 2D and 3D with _subplots.Axes.plot method
+        
+        Arguments:
+        ---------
+                function - Callable that return a numeric array
+                X - domain, function input. X must be equal to [x] for 2D plots or X = [x,y] for 3D plots
+                n_samples - if input was generated automatically, define how many input samples
+                plot_intercept - Plot function intercept [0, function(0)] in 2D or [0, 0, function(0,0)] in 3D
+                label - Function name, supports LaTex expressions
+                **kwargs - key arguments for _subplots.Axes.plot
         
         """        
         n_features = self.axObj.n_axis - 1
@@ -147,19 +154,23 @@ class Plot(GraphBase):
             
         ) -> NoReturn:
         """
-        Desenha gráficos de dispersão com base no método _subplots.Axes.scatter.
-        Suporta interpretação flexível de inputs
-        
-        Argumentos:
+        Description:
         -----------
-                [X,Y,Z] - arrays numéricos contendo os componentes (coordenadas) de cada ponto a ser plotado
-                annot - iterable contendo as anotações como strings
-                offset - desloca a anotação com base em um eixo de referência
-                ax_offset - eixo de referência
-                **kwargs - devem ser passados para  _subplots.Axes.plot()
+                Draw 2D and 3D scatter plots with _subplots.Axes.scatter method
+                Supports flexible inputs as long as inputs are cohorent with number of axis existent
+                and required number of inputs
+        
+        Arguments:
+        ---------
+                [X,Y,Z] - Numeric array of coordinates
+                annot - iterable with strings to annotate
+                offset - displace annotations based on offset value
+                ax_offset - offset axis for reference
+                fontsize - fontsize of annotations
+                annot_color - color of annotations
+                **kwargs - devem ser passados para  _subplots.Axes.scatter
         
         """ 
-
         self.axObj.ax_scatter(*self.iter_params(X, Y, Z), **kwargs)
 
         if annot is not None:
@@ -186,7 +197,34 @@ class Plot(GraphBase):
             **kwargs
             
         ) -> NoReturn:
+        """
+        Description:
+        -----------
+            Draw 2D and 3D surfaces based on a meshgrid of values. It is also flexible with inputs
+            It's possible to either pass a full grid of values to draw the surface, or pass a callable function
+            to compute the last dimension of a self generated meshgrid. If both parameters are skiped, it will
+            throw an error since ther is no sufficient input to derive a surface.
+            
+            It's important to mention that changes between 2D and 3D plots is the underlying matplotlib function we call,
+            specially because in both cases the function will perform precisely the same behaviour on creating a meshgrid.
+            Any function passed will comput Z = f(X,Y) and the (X,Y,Z) grid will be created. What happens with the Z value
+            is dependent on the number of axis: 
+                
+                - if the plot is bidimensional, surface will be displayed with _subplots.Axes.contourf method, where Z works
+                  as a topographic colormapping and (X,Y) represent latitudinal and longitudinal coords.
+                - if the plot is tridimensional, we use _subplots.Axes.surface method, and Z will be interpreted as altitude
+                
+                               
+        Arguments:
+        ---------
+            grid - meshgrid with numeric values for plotting the surface
+            function - callable to define the last dimension of a surface Z = f(X,Y). 
+            min_val - min value for generating meshgrid
+            max_val - max value for generating meshgrid
+            n_samples - number of samples in base variable to generate 
+            **kwargs - devem ser passados para  _subplots.Axes.surface or _subplots.Axes.contourf 
         
+        """
         if grid is None:
             
             if callable(function):
@@ -231,7 +269,26 @@ class Plot(GraphBase):
             **kwargs
         
         ) -> NoReturn:
+        """
+        Description:
+        -----------
+                Draw 2D and 3D numeric vectors with _subplots.Axes.quiver method
+                Supports flexible inputs as long as inputs are cohorent with number of axis existent
+                and required number of inputs
         
+        Arguments:
+        ---------
+                [X,Y,Z] - Numeric array of coordinates
+                origin - numeric array with vector space origin values, must match number of axis
+                color - color to plot the vectors
+                annot - iterable with strings to annotate
+                offset - displace annotations based on offset value
+                ax_offset - offset axis for reference
+                fontsize - fontsize of annotations
+                annot_color - color of annotations
+                **kwargs - key arguments to _subplots.Axes.quiver
+        
+        """         
         # Consolida os argumentos de input em uma única matriz
         vecs = np.array([*self.iter_params(X,Y,Z)]).T
         
