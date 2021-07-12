@@ -5,6 +5,7 @@ Created on Wed May 12 19:56:10 2021
 @author: rodri
 """
 import numpy as np
+import pandas as pd
 
 from Visuals._utils_._type_definitions import *
 
@@ -37,7 +38,7 @@ def to_numpy(array: NumericArray) -> np.ndarray:
 
 def numpy_convert(
         array: NumericArray,
-        check: bool = True,
+        check: bool = False,
         squeeze: bool = False, 
         expand: bool = False,
         flat: bool = False
@@ -60,19 +61,21 @@ def numpy_convert(
     
     '''     
     if check:
-        ndarray = to_numpy(array)
-
+        array = to_numpy(array)
+    
+    # Os if statements abaixo esperam que array seja uma instancia de numpy.ndarray
+    # Se não há garantias de que o argumento array é np.ndarray, chame a função com check=True
     if squeeze and ndarray.ndim >= 2:
-        ndarray = np.squeeze(ndarray)
+        array = np.squeeze(array)
 
-    if expand and ndarray.ndim == 1:
-        ndarray = np.expand_dims(ndarray, axis=0)
+    if expand and array.ndim == 1:
+        array = np.expand_dims(array, axis=0)
 
-    if flat and ndarray.ndim >= 2:
-            flatten = [feature.ravel() for feature in ndarray]
-            ndarray = np.array(flatten).T
+    if flat and array.ndim >= 2:
+            flatten = [feature.ravel() for feature in array]
+            array = np.array(flatten).T
 
-    return ndarray
+    return array
 
 
 
